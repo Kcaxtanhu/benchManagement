@@ -1,7 +1,36 @@
 ﻿@page "/"
+@using Models
+@using BJSS.BenchManagement.UI.Services
+@inject BenchState BenchState
 
-<PageTitle>Index</PageTitle>
+<PageTitle>List</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Current Members</h1>
 
-Welcome to your new app.
+
+    <PlayerCard Players="@Players" />
+
+
+@code {
+    public List<BenchPlayer> Players = new();
+        @* new List<BenchPlayer> 
+        { 
+            new BenchPlayer() 
+            { 
+                FullName = "Damásio Sabino", 
+                Role = "Software Engineer"
+            },
+            new BenchPlayer() 
+            { 
+                FullName = "Josué Costa", 
+                Role = "Software Engineer"
+            } 
+        }; *@
+
+    protected override Task OnInitializedAsync()
+    {
+        Players = BenchState.GetAllPlayers().Result.ToList();
+        return base.OnInitializedAsync();
+    }
+}
+

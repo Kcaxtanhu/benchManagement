@@ -1,0 +1,14 @@
+@using Models
+
+<div class="container">
+    @foreach (var player in @Players)
+    {
+        <div class="w3-panel w3-card-4" display="inline-block">
+            <p>@player.FullName</p>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public List<BenchPlayer> Players { get; set; }
+}

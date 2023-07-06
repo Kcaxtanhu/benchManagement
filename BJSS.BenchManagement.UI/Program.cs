@@ -1,13 +1,20 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.EntityFrameworkCore;
 using BJSS.BenchManagement.UI.Data;
+using BJSS.BenchManagement.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddDbContext<BenchContext>(options =>
+    options.UseSqlite("Data Source=BenchManagement.db"));
+
+builder.Services.AddControllers();
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<BenchState>();
 
 var app = builder.Build();
 
@@ -27,5 +34,6 @@ app.UseRouting();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+app.MapControllers();
 
 app.Run();
