@@ -9,10 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddDbContext<BenchContext>(options =>
-    options.UseSqlite("Data Source=BenchManagement.db"));
-
-builder.Services.AddControllers();
+builder.Services.AddSqlite<BenchContext>("Data Source=BenchManagement.db");
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<BenchState>();
 
@@ -32,8 +29,16 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.MapRazorPages();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
-app.MapControllers();
+app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+
+// Initialize the database
+var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+using (var scope = scopeFactory.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<BenchContext>();
+}
 
 app.Run();

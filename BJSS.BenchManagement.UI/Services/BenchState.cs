@@ -1,23 +1,12 @@
-using Models;
+using BJSS.BenchManagement.UI.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace BJSS.BenchManagement.UI.Services
 {
     public class BenchState
     {
-        public List<BenchPlayer> Players = new List<BenchPlayer> 
-        { 
-            new BenchPlayer() 
-            { 
-                FullName = "Damásio Sabino", 
-                Role = "Software Engineer"
-            },
-            new BenchPlayer() 
-            { 
-                FullName = "Josué Costa", 
-                Role = "Software Engineer"
-            } 
-        };
+        public HttpClient _httpClient { get; }
+        public NavigationManager _navigationManager { get; }
 
         public BenchState(HttpClient httpClient, NavigationManager navigationManager)
         {
@@ -25,12 +14,9 @@ namespace BJSS.BenchManagement.UI.Services
             _navigationManager = navigationManager;
         }
 
-        public HttpClient _httpClient { get; }
-        public NavigationManager _navigationManager { get; }
-
         public async Task<IList<BenchPlayer>> GetAllPlayers()
         {
-            var response = await _httpClient.GetFromJsonAsync<List<BenchPlayer>>($"{_navigationManager.BaseUri}orders");
+            var response = await _httpClient.GetFromJsonAsync<List<BenchPlayer>>($"{_navigationManager.BaseUri}bench");
             if (response == null)
                 new List<BenchPlayer>();
 

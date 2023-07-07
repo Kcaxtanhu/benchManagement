@@ -1,5 +1,5 @@
 ﻿@page "/"
-@using Models
+@using BJSS.BenchManagement.UI.Models
 @using BJSS.BenchManagement.UI.Services
 @inject BenchState BenchState
 
@@ -13,24 +13,12 @@
 
 @code {
     public List<BenchPlayer> Players = new();
-        @* new List<BenchPlayer> 
-        { 
-            new BenchPlayer() 
-            { 
-                FullName = "Damásio Sabino", 
-                Role = "Software Engineer"
-            },
-            new BenchPlayer() 
-            { 
-                FullName = "Josué Costa", 
-                Role = "Software Engineer"
-            } 
-        }; *@
+       
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        Players = BenchState.GetAllPlayers().Result.ToList();
-        return base.OnInitializedAsync();
+        var response = await BenchState.GetAllPlayers();
+        Players  = response.ToList();
     }
 }
 
